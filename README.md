@@ -153,14 +153,6 @@ Refer to the documentation for more examples.
       )
     end
 
-## Compatibility
-
-This gem has been tested on the following platforms/Rubies:
-
-  * Ruby 1.9.3 on OSX Lion/Mountain Lion
-
-If you run into any gotcha's on other platforms, please contribute a patch (see below) and update the above list.
-
 ## Contributing
 
 1. Fork it
