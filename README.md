@@ -153,6 +153,10 @@ Refer to the documentation for more examples.
       )
     end
 
+## Compatibility
+
+Currently targeted for Ruby 1.9.
+
 ## Contributing
 
 1. Fork it
