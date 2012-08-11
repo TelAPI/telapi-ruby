@@ -1,4 +1,4 @@
-# Telapi::Ruby
+# TelAPI Ruby Gem
 
 See www.telapi.com to signup for TelAPI.
 
