@@ -18,6 +18,7 @@ require 'telapi/fraud'
 require 'telapi/incoming_phone_number'
 require 'telapi/message'
 require 'telapi/notification'
+require 'telapi/participant'
 require 'telapi/recording'
 require 'telapi/transcription'
 
