@@ -1,5 +1,7 @@
 module Telapi
-  # Wraps TelAPI Participant functionality
+  # A Participant is always generated via Conferences but
+  # this class also provides some convenience methods to access
+  # them directly, thereby reducing API calls.
   class Participant < Resource
     class << self
       # Convenient alternative to Conference::participants
