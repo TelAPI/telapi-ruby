@@ -13,14 +13,14 @@ describe Telapi::AvailablePhoneNumber do
 
     it "calls api via http get and returns a ResourceCollection" do
       api_should_use(:get)
-      klass.list('US').should be_a(Telapi::ResourceCollection)
+      klass.list('US', 'Local').should be_a(Telapi::ResourceCollection)
     end
 
     context "when Available Phone Numbers exist" do
       before { stub_telapi_request('{ "available_phone_numbers": [{ "phone_number": "+14242495526" }] }') }
 
       it "has a collection of Available Phone Number objects" do
-        klass.list('US').first.should be_a(klass)
+        klass.list('US', 'Local').first.should be_a(klass)
       end
     end
   end
