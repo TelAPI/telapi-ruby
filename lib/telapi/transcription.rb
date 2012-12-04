@@ -9,6 +9,8 @@ module Telapi
       # Also, Transcriptions can be scoped to a recording, see Telapi::Recording::transcriptions
       #
       # Optional params is a hash containing:
+      # +Status+:: in-progress, completed, or failed
+      # +DateTranscribed+:: YYYY-MM-DD format
       # +Page+:: integer greater than 0
       # +PageSize+:: integer greater than 0
       def list(optional_params = {})
