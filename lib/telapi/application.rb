@@ -25,10 +25,8 @@ module Telapi
       # Creates an application, returning a Telapi::Application object
       # See http://www.telapi.com/docs/api/rest/applications/create/
       #
-      # Required params:
-      # +name+:: string
-      #
       # Optional params is a hash containing:
+      # +FriendlyName+:: string
       # +VoiceUrl+:: valid URL
       # +VoiceMethod+:: (POST) or GET
       # +VoiceFallbackUrl+:: valid URL
@@ -42,9 +40,8 @@ module Telapi
       # +HeartbeatMethod+:: (POST) or GET
       # +HangupCallback+:: valid URL
       # +HangupCallbackMethod+:: (POST) or GET
-      def create(name, optional_params = {})
-        opts = { :FriendlyName => name }.merge(optional_params)
-        response = Network.post(['Applications'], opts)
+      def create(optional_params = {})
+        response = Network.post(['Applications'], optional_params)
         Application.new(response)
       end
 
@@ -55,8 +52,6 @@ module Telapi
       # +id+:: application id
       #
       # Optional params is a hash supporting same options under ::create
-      # in addition to:
-      # +FriendlyName+:: string
       def update(id, optional_params = {})
         response = Network.post(['Applications', id], optional_params)
         Application.new(response)

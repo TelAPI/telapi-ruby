@@ -21,5 +21,6 @@ require 'telapi/notification'
 require 'telapi/participant'
 require 'telapi/recording'
 require 'telapi/transcription'
+require 'telapi/usage'
 
 require 'telapi/inbound_xml'
