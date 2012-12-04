@@ -58,7 +58,7 @@ Methods that return collections wrap Resource objects in a Resource Collection i
 
 ## Documentation
 
-Detailed documentation can be found at [RubyDoc](http://rubydoc.info/gems/telapi/) and [the official TelAPI documentation site](http://www.telapi.com/docs/).
+Detailed documentation for this libray can be found at [TelAPI-Ruby Reference](http://telapi.github.com/telapi-ruby/) or [RubyDoc](http://rubydoc.info/gems/telapi/).
 
 ## Usage Examples - REST API
 
