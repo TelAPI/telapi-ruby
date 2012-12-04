@@ -26,13 +26,30 @@ module Telapi
       # Creates a new incoming phone number, returning a Telapi::IncomingPhoneNumber object
       # See http://www.telapi.com/docs/api/rest/incoming-phone-numbers/add-or-delete/
       #
-      # Required params:
-      # +phone_number+:: area code, e.g. 18052585701
-      def create(phone_number)
-        opts = { :PhoneNumber => phone_number }
-        response = Network.post(['IncomingPhoneNumbers'], opts)
+      # Conditional params:
+      # +PhoneNumber+:: e.g. 18055555701
+      # +AreaCode+:: e.g. 732
+      #
+      # Optional params is a hash containing:
+      # +FriendlyName+:: string
+      # +VoiceUrl+:: valid URL
+      # +VoiceMethod+:: (POST) or GET
+      # +VoiceFallbackUrl+:: valid URL
+      # +VoiceFallbackMethod+:: (POST) or GET
+      # +VoiceCallerIdLookup+:: true or (false)
+      # +SmsUrl+:: valid URL
+      # +SmsMethod+:: (POST) or GET
+      # +SmsFallbackUrl+:: valid URL
+      # +SmsFallbackMethod+:: (POST) or GET
+      # +HeartbeatUrl+:: valid URL
+      # +HeartbeatMethod+:: (POST) or GET
+      # +HangupCallback+:: valid URL
+      # +HangupCallbackMethod+:: (POST) or GET
+      def create(optional_params = {})
+        response = Network.post(['IncomingPhoneNumbers'], optional_params)
         IncomingPhoneNumber.new(response)
       end
+
 
       # Delete an incoming phone number, returning a Telapi::IncomingPhoneNumber object
       # See http://www.telapi.com/docs/api/rest/incoming-phone-numbers/add-or-delete/
