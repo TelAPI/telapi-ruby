@@ -1,74 +1,869 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-
   <head>
-    <meta charset='utf-8' />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="Telapi-ruby : " />
+    <title>TelAPI-Ruby Reference</title>
 
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link href="stylesheets/prettify.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" src="javascripts/prettify.js"></script>
 
-    <title>Telapi-ruby</title>
   </head>
+  <body onload="prettyPrint()">
 
-  <body>
+<div class="topbar">
+<div class="container">
+<a href="http://www.telapi.com" class="brand">TelAPI</a>
+</div>
+</div>
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/TelAPI/telapi-ruby">View on GitHub</a>
+<div class="container">
+<div class="hero-unit">
+<h1>TelAPI-Ruby Reference</h1>
+</div>
+</div>
 
-          <h1 id="project_title">Telapi-ruby</h1>
-          <h2 id="project_tagline"></h2>
+    <div class="container">
+        <div class="row">
+        <div class="span-two-thirds">
 
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/TelAPI/telapi-ruby/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/TelAPI/telapi-ruby/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
+        <h1 id="inboundxml">InboundXML</h1>
+
+        <p>We've made generating InboundXML with this library as intuitive as possible by defining a simple code design pattern which corresponds to the structure of the XML. The best way to understand this pattern is to take a look at an example:</p>
+
+<pre class="prettyprint lang-ruby">
+require 'telapi'
+ 
+ix = Telapi::InboundXml.new
+ 
+puts ix.response
+
+/*
+&lt;/Response&gt;
+*/
+</pre>
+
+<p>First and foremost, you need to instantiate a new InboundXml object. This assignment alone begins the process of generating the xml. As shown above, if we print ix.response, the start of the base elements required for an InboundXML document are shown.</p>
+
+<pre class="prettyprint lang-ruby">
+require 'telapi'
+
+ix = Telapi::InboundXml.new do
+  Record(:action => "http://foo-url.com")
+end
+ 
+puts ix.response
+
+
+/*
+&lt;Response&gt;
+  &lt;Record action="http://foo-url.com/" /&gt;
+&lt;/Response&gt;
+*/
+</pre>
+
+<p>Creating elements is super easy. Simply inovke the element you would like to add to the XML document within a block as shown above. Any desired attributes of the element are passed along when peforming the call.</p>
+
+<pre class="prettyprint lang-ruby">
+require 'telapi'
+ 
+ix = Telapi::InboundXml.new do
+  Record(:action => "http://foo-url.com")
+  Say("Hello!", :voice => "man")
+end
+ 
+puts ix.response
+
+/*
+&lt;Response&gt;
+  &lt;Record action="http://foo-url.com/" /&gt;
+  &lt;Say voice="man"&gt;Hello!&lt;Say /&gt;
+&lt;/Response&gt;
+*/
+</pre>
+
+<p>This dot chaining can continue for as many elements as needed in the response. Specifying of element attributes is achieved by passing them to to the element method. For details on element methods and which parameters are required when, see the InboundXML source <a href="https://github.com/TelAPI/telapi-ruby/tree/master/library/TelAPI.InboundXML">here</a>.</p>
+
+<pre class="prettyprint lang-ruby">
+require 'telapi'
+ 
+ix = Telapi::InboundXml.new do
+  Record(:action => "http://foo-url.com")
+  Say("Hello!", :voice => "man")
+  Dial() { Coference("ConfRoom") }
+end
+ 
+puts ix.response
+
+
+/*
+&lt;Response&gt;
+  &lt;Record action="http://foo-url.com/" /&gt;
+  &lt;Say voice="man"&gt;Hello!&lt;Say /&gt;
+  &lt;Dial&gt;
+    &lt;Conference&gt;ConfRoom&lt;Conference/&gt;
+  &lt;Dial /&gt;
+&lt;/Response&gt;
+*/
+</pre>
+
+<p>Children elements, such as Conference, can be added to the document by putting them within a second block when calling the desired parent element. An example of this is shown above.</p>
+
+        
+        <hr><h1 id="rest-api">REST API</h1>
+
+        <P>Before using any of the TelAPI REST methods available, you must authenticate your account. Do so by including your REST API credentials in the following way:</p>
+
+<pre class="prettyprint lang-ruby">
+Telapi.config do |config|
+  config.account_sid = '{AccountSid}'
+  config.auth_token  = '{AuthToken}'
+end
+</pre> 
+
+<p>Notice the code above instantiates and assigns a Telapi object. Every method used throughout this helper library will use this main Telapi class.</p>
+
+<p>Below are usage examples and additional information for each function of TelAPI accomplished via REST requests. If you need to dig deeper, the source defining each REST method is found <a href="https://github.com/TelAPI/telapi-ruby/tree/master/lib/telapi">here</a>.</p>
+        <hr><h2 id="accounts">Accounts</h2>
+
+        <h4 style="display:inline;">View Account</h4>
+
+        <a href="http://www.telapi.com/docs/api/rest/accounts/view/">Documentation</a><br>
+
+        <p>Request an account resource with the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/lib/telapi/account.rb#L8">get</a> method:</p>
+
+<pre class="prettyprint lang-ruby">
+account = Telapi::Account.get
+
+puts account
+</pre> 
+
+<p>Note how any available properties of the account object can be accessed via dot notation:</p>
+
+<pre class="prettyprint lang-ruby">
+puts account.sid
+puts account.status
+</pre>
+
+
+        <h4 style="display:inline;">View Usage</h4>
+
+        <a href="http://www.telapi.com/docs/api/rest/accounts/view-usage/">Documentation</a><br>
+
+
+        <p>Request a usage resource with the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/lib/telapi/usage.rb#L23">get</a> method:</p>
+
+<pre class="prettyprint lang-ruby">
+usage = Telapi::Usage.get({sid})
+
+p usage  
+</pre>
+
+<p>Then simply use dot notation to access individual resource properties:</p>
+
+<pre class="prettyprint lang-ruby">
+p usage.quantity
+p usage.product
+</pre> 
+
+        <h4 style="display:inline;">List Usages</h4>
+
+        <a href="http://www.telapi.com/docs/api/rest/accounts/list-usages/">Documentation</a><br>
+
+
+        <p>Request usages list resource with the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/lib/telapi/usage.rb#L16">list</a> method:</p>
+
+
+<pre class="prettyprint lang-ruby">
+usages = Telapi::Usage.list()
+
+p usages           
+</pre>
+
+        <hr><h2 id="sms">SMS</h2>
+
+        <h4 style="display:inline;">View SMS Message</h4>
+
+        <a href="http://www.telapi.com/docs/api/rest/sms/view/">Documentation</a><br>
+
+        <p>Request an SMS resource with the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/lib/telapi/message.rb#L23">get</a> method:</p>
+
+<pre class="prettyprint lang-ruby">
+message = Telapi::Message.get('{SmsMessageSid}')
+ 
+p message
+</pre> 
+
+
+<p>Note how any available properties of the message object can be accessed via dot notation:</p>
+
+<pre class="prettyprint lang-ruby">
+p message.price
+p message.body
+</pre>
+
+<h4 style="display:inline;">List SMS Messages</h4>
+
+        <a href="http://www.telapi.com/docs/api/rest/sms/list/">Documentation</a><br>
+
+        <p>Request an SMS list resource with the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/lib/telapi/message.rb#L16">list</a> method:</p>
+
+<pre class="prettyprint lang-ruby">
+messages = Telapi::Message.list()
+
+p messages
+</pre> 
+
+<h4 style="display:inline;">Send SMS Message</h4>
+
+        <a href="http://www.telapi.com/docs/api/rest/sms/send/">Documentation</a><br>
+
+        <p>Send SMS messages with the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/lib/telapi/message.rb#L38">create</a> method:</p>
+
+<pre class="prettyprint lang-ruby">
+message = Telapi::Message.create( From = '7325551234', To = '4041011337', Body = 'hello!')
+ 
+p message.sid
+</pre> 
+
+<hr><h2 id="calls">Calls</h2>
+
+        <h4 style="display:inline;">View Call</h4>
+
+        <a href="http://www.telapi.com/docs/api/rest/calls/view/">Documentation</a><br>
+
+        <p>Request a call resource with the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/lib/telapi/call.rb#L23">get</a> method:</p>
+
+<pre class="prettyprint lang-ruby">
+call = Telapi::Call.get({CallSid})
+ 
+p call
+</pre> 
+
+<p>Note how any available properties of the call object can be accessed via dot notation:</p>
+
+<pre class="prettyprint lang-ruby">
+p call.price
+p call.status
+</pre>
+
+
+        <h4 style="display:inline;">List Calls</h4>
+
+        <a href="http://www.telapi.com/docs/api/rest/calls/list/">Documentation</a><br>
+
+        <p>Request a call list resource with the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/lib/telapi/call.rb#L16">list</a> method:</p>
+
+<pre class="prettyprint lang-ruby">
+calls = Telapi::Call.list()
+ 
+p calls
+</pre>
+
+<h4 style="display:inline;">Make Call</h4>
+
+        <a href="http://www.telapi.com/docs/api/rest/calls/make/">Documentation</a><br>
+
+        <p>Make a call with the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/lib/telapi/call.rb#L46">make</a> method:</p>
+
+<pre class="prettyprint lang-ruby">
+call = Telapi::Call.make("7325551234", "2095555678", "http://foo.com")
+ 
+p call.sid
+</pre>
+
+<h4 style="display:inline;">Interrupt Call</h4>
+
+        <a href="http://www.telapi.com/docs/api/rest/calls/interrupt/">Documentation</a><br>
+
+        <p>Interrupt a call with the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/lib/telapi/call.rb#L60">interrupt</a> method:</p>
+
+<pre class="prettyprint lang-ruby">
+Telapi::Call.interrupt({CallSid}, :Status' => 'Canceled')
+</pre>
+
+<h4 style="display:inline;">Hangup Call</h4>
+
+        <a href="http://www.telapi.com/docs/api/rest/calls/hangup/">Documentation</a><br>
+
+        <p>Hangup a call with the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/lib/telapi/call.rb#L72">hangup</a> method:</p>
+
+<pre class="prettyprint lang-ruby">
+Telapi::Call.hangup({CallSid})
+</pre>
+
+<h4 style="display:inline;">Send Digits to Call</h4>
+ <a href="http://www.telapi.com/docs/api/rest/calls/send-digits/">Documentation</a><br>
+
+         <p>To play DTMF digits during a call, use the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/lib/telapi/call.rb#L85">send_digits</a> method</p>
+
+<pre class="prettyprint lang-ruby">
+Telapi::Call.send_digits( {CallSid}, '1234' )
+</pre>
+
+<h4 style="display:inline;">Play Audio to Call</h4>
+
+        <a href="http://www.telapi.com/docs/api/rest/calls/play-audio/">Documentation</a><br>
+
+        <p>To play audio to a call, use the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/lib/telapi/call.rb#L103">play_audio</a> method:</p>
+
+<pre class="prettyprint lang-ruby">
+Telapi::Call.play_audio('{CallSid}', AudioUrl = 'http://www.example.com/sample.mp3')
+</pre>
+
+<h4 style="display:inline;">Call Voice Effects</h4>
+
+        <a href="http://www.telapi.com/docs/api/rest/calls/voice-effects/">Documentation</a><br>
+
+        <p>To adjust call voice effects, use the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/lib/telapi/call.rb#L121">voice_effect</a> method:</p>
+
+<pre class="prettyprint lang-ruby">
+Telapi::Call.play_audio( {CallSid}, :Pitch => '2' )
+</pre>
+
+<h4 style="display:inline;">Record Call</h4>
+
+        <a href="http://www.telapi.com/docs/api/rest/calls/record/">Documentation</a><br>
+
+        <p>To record a call, use the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/lib/telapi/call.rb#L136">record</a> method:</p>
+
+<pre class="prettyprint lang-ruby">
+Telapi::Call.record( {CallSid}, Record = 'true' )
+</pre>
+
+
+<hr><h2 id="conferences">Conferences</h2>
+
+<h4 style="display:inline;">View Conference</h4>
+
+        <a href="http://www.telapi.com/docs/api/rest/conferences/view/">Documentation</a><br>
+
+        <p>Use the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/library/TelAPI.Api/Conferences.cs#L16">GetConference</a> method to view a conference resource:</p>
+
+<pre class="prettyprint lang-ruby">
+conference = Telapi::Conference.get('{ConferenceSid}')
+
+p conference
+</pre>
+
+<h4 style="display:inline;">List Conferences</h4>
+
+        <a href="http://www.telapi.com/docs/api/rest/conferences/list/">Documentation</a><br>
+
+        <p>Request conferences list resource with the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/lib/telapi/conference.rb#L16">list</a> method:</p>
+
+<pre class="prettyprint lang-ruby">
+conferences = Telapi::Conference.list()
+
+p conferences
+</pre>
+
+<h4 style="display:inline;">View Participant</h4>
+
+        <a href="http://www.telapi.com/docs/api/rest/conferences/view-participant/">Documentation</a><br>
+
+        <p>Request a participant resource with the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/lib/telapi/participant.rb#L13">get</a> method:</p>
+
+<pre class="prettyprint lang-ruby">
+participant = Telapi::Participant.get({ConferenceSid}, {CallSid})
+
+p participant
+</pre>
+
+<h4 style="display:inline;">List Participants</h4>
+
+        <a href="http://www.telapi.com/docs/api/rest/conferences/list-participants/">Documentation</a><br>
+
+        <p>Request a participant list resource with the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/lib/telapi/participant.rb#L8">list</a> method:</p>
+
+
+<pre class="prettyprint lang-ruby">
+participants = Telapi::Participants.list({ConferenceSid})
+
+p participants
+</pre>
+
+
+<h4 style="display:inline;">Mute, Deaf, or Hangup Participant</h4>
+
+        <p>The various actions which can be peformed on a participant (<a href="http://www.telapi.com/docs/api/rest/conferences/deaf-or-mute/">mute/deaf</a>, <a href="http://www.telapi.com/docs/api/rest/conferences/hangup-participant/">hangup</a>) can be invoked by simply appending them to the end of the participant object:</p>
+
+<pre class="prettyprint lang-ruby">
+participant = Telapi::Participant.get({ConferenceSid}, {CallSid})
+
+participant.mute
+participant.unmute
+participant.deaf
+participant.undeaf
+participant.hangup
+</pre>
+
+<h4 style="display:inline;">Play Audio to Participant</h4>
+
+        <a href="http://www.telapi.com/docs/api/rest/conferences/play-audio/">Documentation</a><br>
+
+        <p>Play audio to a participant with the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/lib/telapi/participant.rb#L58">play_audio</a> method:</p>
+
+<pre class="prettyprint lang-ruby">
+participant = Telapi::Participant.get({ConferenceSid}, {CallSid})
+
+participant.play_audio('http://www.telapi.com/audio.mp3')
+</pre>
+
+<hr><h2 id="applications">Applications</h2>   
+
+<h4 style="display:inline;">View Application</h4>
+
+        <a href="http://www.telapi.com/docs/api/rest/applications/view/">Documentation</a><br>
+
+        <p>Request an application resource with the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/lib/telapi/application.rb#L20">get</a> method:</p>
+
+<pre class="prettyprint lang-ruby">
+puts Telapi::Application.get('{ApplicationSid}')
+</pre> 
+
+<h4 style="display:inline;">List Application</h4>
+
+        <a href="http://www.telapi.com/docs/api/rest/applications/list/">Documentation</a><br>
+
+        <p>Request an application list resource with the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/lib/telapi/application.rb#L13">list</a> method:</p>
+
+<pre class="prettyprint lang-ruby">
+apps = Telapi::Application.list( :PageSize => '5' )
+ 
+p apps
+</pre>
+
+<h4 style="display:inline;">Create Application</h4>
+
+        <a href="http://www.telapi.com/docs/api/rest/applications/create/">Documentation</a><br>
+
+        <p>Use the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/lib/telapi/application.rb#L45">create</a> method to make a new application:</p>
+
+<pre class="prettyprint lang-ruby">
+app = Telapi::Application.create( :FriendlyName => 'RubyApp' )
+ 
+p app
+</pre> 
+
+<h4 style="display:inline;">Update Application</h4>
+
+        <a href="http://www.telapi.com/docs/api/rest/applications/update/">Documentation</a><br>
+
+        <p>Request and update applications with the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/lib/telapi/application.rb#L60">update</a> method:</p>
+
+<pre class="prettyprint lang-ruby">
+app = Telapi::Application.update( '{ApplicationSid}', :FriendlyName => 'AwesomeRubyApp!' )
+ 
+p app
+</pre>
+
+<h4 style="display:inline;">Delete Application</h4>
+
+        <a href="http://www.telapi.com/docs/api/rest/applications/delete/">Documentation</a><br>
+
+        <p>Delete an application with the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/lib/telapi/application.rb#L70">delete</a> method:</p>
+
+<pre class="prettyprint lang-ruby">
+Telapi::Application.delete( '{ApplicationSid}' )
+</pre>
+
+<hr><h2 id="ipn">Incoming Phone Numbers</h2>   
+
+<h4 style="display:inline;">View Incoming Phone Number</h4>
+
+        <a href="http://www.telapi.com/docs/api/rest/incoming-phone-numbers/view/">Documentation</a><br>
+
+        <p>Request an incoming phone number resource with the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/lib/telapi/incoming_phone_number.rb#L21">get</a> method:</p>
+
+<pre class="prettyprint lang-ruby">
+incoming_num = Telapi::IncomingPhoneNumber.get('{NumberSid}')
+
+p incoming_num
+</pre>
+
+<h4 style="display:inline;">List Incoming Phone Numbers</h4>
+
+        <a href="http://www.telapi.com/docs/api/rest/incoming-phone-numbers/list/">Documentation</a><br>
+
+        <p>Request an incoming phone number list resource with the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/lib/telapi/incoming_phone_number.rb#L14">list</a> method:</p>
+
+<pre class="prettyprint lang-ruby">
+incoming_nums = Telapi::IncomingPhoneNumber.list()
+
+p incoming_nums
+</pre>
+
+<h4 style="display:inline;">Add Incoming Phone Number</h4>
+
+        <a href="http://www.telapi.com/docs/api/rest/incoming-phone-numbers/add-or-delete/">Documentation</a><br>
+
+        <p>To add an incoming number, use the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/lib/telapi/incoming_phone_number.rb#L48">create</a> method:</p>
+
+<pre class="prettyprint lang-ruby">
+incoming_num = Telapi::IncomingPhoneNumber.create(:AreaCode => '732', :VoiceUrl => 'https://dl.dropbox.com/u/71296878/record.xml')
+
+p incoming_num
+</pre>
+
+<h4 style="display:inline;">Delete Incoming Phone Number</h4>
+
+        <a href="http://www.telapi.com/docs/api/rest/incoming-phone-numbers/add-or-delete/">Documentation</a><br>
+
+        <p>Delete incoming numbers with the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/lib/telapi/incoming_phone_number.rb#L42">delete</a> mehtod</p>
+
+<pre class="prettyprint lang-ruby">
+p Telapi::IncomingPhoneNumber.delete('{NumberSid}')
+</pre>
+
+<h4 style="display:inline;">Update Incoming Phone Number</h4>
+
+        <a href="http://www.telapi.com/docs/api/rest/incoming-phone-numbers/update/">Documentation</a><br>
+
+        <p>Update incoming numbers with the <a href="">update</a> method:</p>
+
+<pre class="prettyprint lang-ruby">
+incoming_num = Telapi::IncomingPhoneNumber.update('{NumberSid}', :FriendlyName => 'RubyNum')
+
+p incoming_num
+</pre>
+
+<hr><h2 id="available">Available Phone Numbers</h2>   
+
+<h4 style="display:inline;">List Available Phone Numbers</h4>
+
+        <a href="http://www.telapi.com/docs/api/rest/available-phone-numbers/list/">Documentation</a><br>
+
+        <p>Request an available phone number list resource with the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/lib/telapi/available_phone_number.rb#L18">list</a> method:</p>
+
+<pre class="prettyprint lang-ruby">
+available_nums = Telapi::AvailablePhoneNumber.list(country_code = 'US', num_type ='Local')
+
+p available_nums
+</pre> 
+
+<hr><h2 id="recordings">Recordings</h2>   
+
+<h4 style="display:inline;">View Recording</h4>
+
+        <a href="http://www.telapi.com/docs/api/rest/recordings/view/">Documentation</a><br>
+
+        <p>Request a recording resource with the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/lib/telapi/recording.rb#L22">get</a> method:</p>
+
+<pre class="prettyprint lang-ruby">
+recording = Telapi::Recording.get('{RecordingSid}')
+
+p recording
+</pre>
+
+<h4 style="display:inline;">List Recording</h4>
+
+        <a href="http://www.telapi.com/docs/api/rest/recordings/list/">Documentation</a><br>
+
+        <p>Request a recording list resource with the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/lib/telapi/recording.rb#L15">list</a> method:</p>
+
+<pre class="prettyprint lang-ruby">
+recordings = Telapi::Recording.list()
+
+p recordings
+</pre>
+
+<hr><h2 id="notifications">Notifications</h2>   
+
+<h4 style="display:inline;">View Notification</h4>
+
+        <a href="http://www.telapi.com/docs/api/rest/notifications/view/">Documentation</a><br>
+
+        <p>Request a notification resource with the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/lib/telapi/notification.rb#L22">get</a> method:</p>
+
+<pre class="prettyprint lang-ruby">
+notification = Telapi::Notification.get('{NotificationSid}')
+
+p notification
+</pre> 
+
+<h4 style="display:inline;">List Notifications</h4>
+
+        <a href="http://www.telapi.com/docs/api/rest/notifications/list/">Documentation</a><br>
+
+        <p>Use the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/lib/telapi/notification.rb#L15">list</a> method to request a notifications list resource:</p>
+
+<pre class="prettyprint lang-ruby">
+notifications = Telapi::Notification.list()
+
+p notifications
+</pre>
+
+<hr><h2 id="transcriptions">Transcriptions</h2>   
+
+<h4 style="display:inline;">View Transcriptions</h4>
+
+        <a href="http://www.telapi.com/docs/api/rest/transcriptions/view/">Documentation</a><br>
+
+        <p>Request a transcription resource with the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/lib/telapi/transcription.rb#L21">get</a> method:</p>
+
+<pre class="prettyprint lang-ruby">
+transcription = Telapi::Transcription.get('{TranscriptionSid}')
+
+p transcription
+</pre>
+
+<h4 style="display:inline;">List Transcriptions</h4>
+
+        <a href="http://www.telapi.com/docs/api/rest/transcriptions/list/">Documentation</a><br>
+
+        <p>Request transcription list resources with the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/lib/telapi/transcription.rb#L14">list</a> method:</p>
+
+<pre class="prettyprint lang-ruby">
+transcriptions = Telapi::Transcription.list()
+
+p transcriptions
+</pre>
+
+<h4 style="display:inline;">Transcribe Recording</h4>
+
+        <a href="http://www.telapi.com/docs/api/rest/transcriptions/transcribe-recording/">Documentation</a><br>
+
+        <p>Transcribe recordings with the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/lib/telapi/recording.rb#L38">transcribe</a> method:</p>
+
+<pre class="prettyprint lang-ruby">
+rec_transc = Telapi::Recording.transcribe('RE1d5dbb8f8a824fe7b4980de9ffd20d1e')
+
+p rec_transc
+</pre>
+
+<h4 style="display:inline;">Transcribe Audio URL</h4>
+
+        <a href="http://www.telapi.com/docs/api/rest/transcriptions/transcribe-audio-url/">Documentation</a><br>
+
+        <p>Transcribe audio files located at external URLs with the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/lib/telapi/transcription.rb#L38">transcribe_audio</a> method:</p>
+
+<pre class="prettyprint lang-ruby">
+audio_transc = Telapi::Transcription.transcribe_audio('http://example.com/file.mp3')
+
+p audio_transc
+</pre>
+
+<hr><h2 id="carrier">Carrier Services</h2>  
+
+<h4 style="display:inline;">Carrier Lookup</h4>
+
+        <a href="http://www.telapi.com/docs/api/rest/carrier-services/carrier-lookup/">Documentation</a><br>
+
+        <p>Request a carrier lookup resource with the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/lib/telapi/carrier.rb#L8">lookup</a> method:</p>
+
+<pre class="prettyprint lang-ruby">
+carrier = Telapi::Carrier.lookup('7325551234')
+
+p carrier
+</pre> 
+
+<h4 style="display:inline;">CNAM (caller id) Lookup</h4>
+
+        <a href="http://www.telapi.com/docs/api/rest/carrier-services/cnam-lookup/">Documentation</a><br>
+
+        <p>Request a cnam lookup resource with the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/lib/telapi/caller_id.rb#L8">lookup</a> method:</p>
+
+<pre class="prettyprint lang-ruby">
+caller_id = Telapi::CallerId.lookup('7325551234')
+
+p caller_id 
+</pre> 
+
+
+<h4 style="display:inline;">BNA (billing name address) Lookup</h4>
+
+        <a href="http://www.telapi.com/docs/api/rest/carrier-services/bna-lookup/">Documentation</a><br>
+
+        <p>Request a bna lookup resource with the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/lib/telapi/bna.rb#L8">lookup</a> method:</p>
+
+<pre class="prettyprint lang-ruby">
+bna = Telapi::Bna.lookup('7325551234')
+
+p bna
+</pre> 
+
+<!--
+<hr><h2 id="fraud">Fraud Control</h2>   
+
+<h4 style="display:inline;">List Fraud Control resources</h4>
+
+        <a href="http://www.telapi.com/docs/api/rest/fraud-control/list/">Documentation</a><br>
+
+        <p>Request a fraud control list resource with the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/library/TelAPI.Api/Frauds.cs#L15">GetFraudControlResources</a> method:</p>
+
+<pre class="prettyprint lang-ruby">
+try
+{
+    var result = client.GetFraudControlResources();
+
+    foreach (var fraud in result.Frauds)
+    {
+        Console.WriteLine("Outbound rate : {0}", fraud.MaxOutboundRate);
+    }
+}
+catch (TelAPIException ex)
+{
+    Console.WriteLine("{0}", ex.Message);
+}
+</pre>  
+
+<h4 style="display:inline;">Authorize Destination</h4>
+
+        <a href="http://www.telapi.com/docs/api/rest/fraud-control/authorize/">Documentation</a><br>
+
+        <p>Authorize destinations with the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/library/TelAPI.Api/Frauds.cs#L42">AuthorizeDestination<a/> method:</p>
+
+<pre class="prettyprint lang-ruby">
+try
+{
+    var result = client.AuthorizeDestination(
+        "country-iso-code", true, true, false
+    );
+
+    foreach (var fraud in result.Frauds)
+    {
+        Console.WriteLine("Outbound rate : {0}", fraud.MaxOutboundRate);
+    }
+}
+catch (TelAPIException ex)
+{
+    Console.WriteLine("{0}", ex.Message); 
+}
+</pre>
+
+<h4 style="display:inline;">Extend Destination Authorization</h4>
+
+        <a href="http://www.telapi.com/docs/api/rest/fraud-control/extend/">Documentation</a><br>
+
+        <p>Extend destination authorization with the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/library/TelAPI.Api/Frauds.cs#L108">ExtendDestinationAuth</a> method:</p>
+
+<pre class="prettyprint lang-ruby">
+try
+{
+    var result = client.ExtendDestinationAuth("country-iso-code");
+
+    foreach (var fraud in result.Frauds)
+    {
+        Console.WriteLine("Outbound rate : {0}", fraud.MaxOutboundRate);
+    }
+}
+catch (TelAPIException ex)
+{
+    Console.WriteLine("{0}", ex.Message);
+}
+</pre> 
+
+<h4 style="display:inline;">Block Destination</h4>
+
+        <a href="http://www.telapi.com/docs/api/rest/fraud-control/block/">Documentation</a><br>
+
+        <p>Block destinations with the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/library/TelAPI.Api/Frauds.cs#L75">BlockDestination</a> method:</p>
+
+<pre class="prettyprint lang-ruby">
+try
+{
+    var result = client.BlockDestination("country-iso-code");
+
+    foreach (var fraud in result.Frauds)
+    {
+        Console.WriteLine("Outbound rate : {0}", fraud.MaxOutboundRate);
+    }
+}
+catch (TelAPIException ex)
+{
+    Console.WriteLine("{0}", ex.Message); 
+}
+</pre>
+
+<h4 style="display:inline;">Whitelist Destination</h4>
+
+        <a href="http://www.telapi.com/docs/api/rest/fraud-control/whitelist/">Documentation</a><br>
+
+        <p>Whitelist destinations with the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/library/TelAPI.Api/Frauds.cs#L141">WhitelistDestination</a> method:</p>
+
+<pre class="prettyprint lang-ruby">
+try
+{
+    var result = client.WhitelistDestination("country-iso-code");
+
+    foreach (var fraud in result.Frauds)
+    {
+        Console.WriteLine("Outbound rate : {0}", fraud.MaxOutboundRate);
+    }
+}
+catch (TelAPIException ex)
+{
+    Console.WriteLine("{0}", ex.Message); 
+}
+</pre>
+-->
+
+      </div>
+
+      <div class="span-one-third">
+
+        <div id="tab-navi">
+
+          <ul>
+            <li class="ui-state-default"><a href="https://github.com/telapi/telapi-ruby/zipball/master">Download ZIP File &#187;</a></li>
+            <li class="ui-state-default"><a href="https://github.com/telapi/telapi-ruby/tarball/master">Download TAR Ball &#187;</a></li>
+            <li class="ui-state-default"><a href="https://github.com/telapi/telapi-ruby">View On GitHub &#187;</a></li>
+          </ul>
+
+                  <ul>
+                          <li class="ui-state-default">
+                              <a href="#inboundxml">InboundXML</a>
+                          </li> 
+
+                          <li class="ui-state-default">
+                              <a href="#rest-api">REST API</a>
+                          </li>                
+                                                          
+                          <li>
+                                      <li style="font-weight: normal;font-family:ProximaNovaRegular" class='ui-state-default'>
+                                          <a href="#accounts">Accounts</a>
+                                      </li>
+                                      <li style="font-weight: normal;font-family:ProximaNovaRegular" class='ui-state-default'>
+                                          <a href="#sms">SMS</a>
+                                      </li>
+                                      <li style="font-weight: normal;font-family:ProximaNovaRegular" class='ui-state-default'>
+                                          <a href="#calls">Calls</a>
+                                      </li>
+                                      <li style="font-weight: normal;font-family:ProximaNovaRegular" class='ui-state-default'>
+                                          <a href="#conferences">Conferences</a>
+                                      </li>
+                                      <li style="font-weight: normal;font-family:ProximaNovaRegular" class='ui-state-default'>
+                                          <a href="#applications">Applications</a>
+                                      </li>
+                                      <li style="font-weight: normal;font-family:ProximaNovaRegular" class='ui-state-default'>
+                                          <a href="#ipn">Incoming Phone Numbers</a>
+                                      </li>
+                                      <li style="font-weight: normal;font-family:ProximaNovaRegular" class='ui-state-default'>
+                                          <a href="#available">Available Phone Numbers</a>
+                                      </li>
+                                      <li style="font-weight: normal;font-family:ProximaNovaRegular" class='ui-state-default'>
+                                          <a href="#recordings">Recordings</a>
+                                      </li>
+                                      <li style="font-weight: normal;font-family:ProximaNovaRegular" class='ui-state-default'>
+                                          <a href="#notifications">Notifications</a>
+                                      </li>
+                                      <li style="font-weight: normal;font-family:ProximaNovaRegular" class='ui-state-default'>
+                                          <a href="#transcriptions">Transcriptions</a>
+                                      </li>
+                                      <li style="font-weight: normal;font-family:ProximaNovaRegular" class='ui-state-default'>
+                                          <a href="#carrier">Carrier Services</a>
+                                      </li><!--
+                                      <li style="font-weight: normal;font-family:ProximaNovaRegular" class='ui-state-default'>
+                                          <a href="#fraud">Fraud Control</a>
+                                      </li>-->                                                                                                                                                                            
+                          </li> 
+     
+                  </ul>
+          </div>
+      </div>
+
     </div>
-
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <h3>Welcome to GitHub Pages.</h3>
-
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
-
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
-
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
-
-<h3>Designer Templates</h3>
-
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
-
-<h3>Rather Drive Stick?</h3>
-
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
-
-<h3>Authors and Contributors</h3>
-
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
-
-<h3>Support or Contact</h3>
-
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
-      </section>
     </div>
-
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Telapi-ruby maintained by <a href="https://github.com/TelAPI">TelAPI</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
-
     
-
   </body>
 </html>

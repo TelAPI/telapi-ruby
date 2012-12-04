@@ -1,0 +1,303 @@
+html,body{margin:0;padding:0;}
+h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,cite,code,del,dfn,em,img,q,s,samp,small,strike,strong,sub,sup,tt,var,dd,dl,dt,li,ol,ul,fieldset,form,label,legend,button,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;font-weight:normal;font-style:normal;font-size:100%;line-height:1;font-family:inherit;}
+table{border-collapse:collapse;border-spacing:0;}
+ol,ul{list-style:none;}
+q:before,q:after,blockquote:before,blockquote:after{content:"";}
+
+/* Fonts */
+
+@font-face {
+  font-family: 'ProximaNovaLight';
+  src: url('ProximaNova-Light-webfont.eot');
+  src: local('☺'), url('ProximaNova-Light-webfont.woff') format('woff'), url('ProximaNova-Light-webfont.ttf') format('truetype'), url('ProximaNova-Light-webfont.svg#webfont1IYZQmli') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'ProximaNovaRegular';
+  src: url('ProximaNova-Reg-webfont.eot');
+  src: local('☺'), url('ProximaNova-Reg-webfont.woff') format('woff'), url('ProximaNova-Reg-webfont.ttf') format('truetype'), url('ProximaNova-Reg-webfont.svg#webfontahTfxwb5') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'ProximaNovaSemibold';
+  src: url('ProximaNova-Sbold-webfont.eot');
+  src: local('☺'), url('ProximaNova-Sbold-webfont.woff') format('woff'), url('ProximaNova-Sbold-webfont.ttf') format('truetype'), url('ProximaNova-Sbold-webfont.svg#webfontaA1mSBzj') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'ProximaNovaBold';
+  src: url('ProximaNova-Bold-webfont.eot');
+  src: local('☺'), url('ProximaNova-Bold-webfont.woff') format('woff'), url('ProximaNova-Bold-webfont.ttf') format('truetype'), url('ProximaNova-Bold-webfont.svg#webfontnr0MA2zn') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'ProximaNovaExtrabold';
+  src: url('ProximaNova-Xbold-webfont.eot');
+  src: local('☺'), url('ProximaNova-Xbold-webfont.woff') format('woff'), url('ProximaNova-Xbold-webfont.ttf') format('truetype'), url('ProximaNova-Xbold-webfont.svg#webfont2rpW2ohz') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+    background: url("pricing-bg.jpg") repeat-x scroll left top white;
+    font-family: 'ProximaNovaRegular','ProximaNova',Arial,Helvetica,sans-serif;
+    font-size: 15px;
+    padding-top: 0 !important;
+    font-weight: normal;
+    line-height: 18px;
+    color: #404040;
+}
+body.home {
+    background: url("home-bg.jpg") repeat-x scroll left top #FFFFFF;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'ProximaNovaSemiBold','ProximaNova',Arial,Helvetica,sans-serif;
+    font-weight: normal;
+}
+h1 {
+    font-size: 54px;
+}
+h2 {
+    font-size: 42px;
+    margin: 12px 0 21px;
+}
+h3 {
+    font-size: 30px;
+    margin-bottom: 15px;
+}
+h4 {
+    font-size: 19px;
+    line-height: 24px;
+    margin-bottom: 8px;
+}
+h5 {
+    font-size: 17px;
+    line-height: 21px;
+    margin-bottom: 8px;
+}
+h6 {
+    font-size: 14px;
+    line-height: 20px;
+}
+a, .btn, button {
+    outline: 0 none !important;
+}
+a {
+    color: #008FCB;
+    text-decoration: none;
+}
+a:hover {
+    color: #006894;
+    text-decoration: none;
+}
+strong {
+    font-family: 'ProximaNovaSemibold','ProximaNova',Arial,Helvetica,sans-serif;
+    font-weight: normal;
+}
+p {
+    font-size: 18px;
+    line-height: 27px;
+    margin-bottom: 15px;
+}
+
+.container{width:940px;margin-left:auto;margin-right:auto;zoom:1;}
+
+.container::before, .container::after {
+display: table;
+content: "";
+zoom: 1;
+}
+
+.container::after {
+clear: both;
+}
+
+.container::before, .container::after {
+display: table;
+content: "";
+zoom: 1;
+}
+
+.row{zoom:1;margin-left:-20px;}.row:before,.row:after{display:table;content:"";zoom:1;}
+.row:after{clear:both;}
+.row>[class*="span"]{display:inline;float:left;margin-left:20px;}
+.span1{width:40px;}
+.span2{width:100px;}
+.span3{width:160px;}
+.span4{width:220px;}
+.span5{width:280px;}
+.span6{width:340px;}
+.span7{width:400px;}
+.span8{width:460px;}
+.span9{width:520px;}
+.span10{width:580px;}
+.span11{width:640px;}
+.span12{width:700px;}
+.span13{width:760px;}
+.span14{width:820px;}
+.span15{width:880px;}
+.span16{width:940px;}
+.span17{width:1000px;}
+.span18{width:1060px;}
+.span19{width:1120px;}
+.span20{width:1180px;}
+.span21{width:1240px;}
+.span22{width:1300px;}
+.span23{width:1360px;}
+.span24{width:1420px;}
+.span-two-thirds{width:620px;}
+.span-one-third{width:300px;}
+
+#tab-navi {
+float: right;
+position:fixed;
+height: 100%;
+}
+
+@media screen and (max-height: 850px) {
+  #tab-navi ul:nth-child(2){
+    height: 50%;
+  }
+}
+
+@media screen and (max-height: 800px) {
+  #tab-navi ul:nth-child(2){
+    height: 45%;
+  }
+}
+
+@media screen and (max-height: 750px) {
+  #tab-navi ul:nth-child(2){
+    height: 40%;
+  }
+}
+
+@media screen and (max-height: 700px) {
+  #tab-navi ul:nth-child(2){
+    height: 35%;
+  }
+}
+
+@media screen and (max-height: 650px) {
+  #tab-navi ul:nth-child(2){
+    height: 30%;
+  }
+}
+
+@media screen and (max-height: 600px) {
+  #tab-navi ul:nth-child(2){
+    height: 25%;
+  }
+}
+
+#tab-navi ul {
+background: none repeat scroll 0 0 #F6F6F6;
+border: 1px solid #DDD;
+font-family: 'ProximaNovaSemibold',ProximaNova,Arial,Helvetica,sans-serif;
+margin-left: 0;
+padding: 0;
+overflow: scroll;
+}
+
+ul, ol {
+margin: 0 0 18px 25px;
+list-style: none outside none;
+}
+
+.ui-state-default {
+border: none;
+color: inherit;
+font-weight: inherit;
+background: none !important;
+}
+
+li {
+line-height: 18px;
+}
+
+#tab-navi ul li a {
+display: block;
+padding: 10px 20px;
+}
+
+.ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited {
+color: #1C94C4;
+text-decoration: none;
+}
+
+.hero-unit h1 {
+color: white;
+float: left;
+font-family: 'ProximaNovaLight','ProximaNova',Arial,Helvetica,sans-serif;
+font-size: 48px;
+text-shadow: 0 1px 1px #004661;
+}
+
+.hero-unit {
+background: none repeat scroll 0 0 transparent;
+padding: 40px 0 110px;
+}
+
+.topbar {
+    height: 70px;
+    position: relative;
+    z-index: 10000;
+}
+.topbar .brand {
+    background: url("telapi-logo.png") no-repeat scroll left top transparent;
+    height: 39px;
+    margin: 16px 0 0;
+    padding: 15px 20px 0 0;
+    text-indent: -999em;
+    width: 138px;
+}
+
+.topbar h3 a, .topbar .brand {
+float: left;
+display: block;
+padding: 8px 20px 12px;
+margin-left: -15px;
+color: white;
+font-size: 20px;
+font-weight: 200;
+line-height: 1;
+}
+
+.ui-state-default{border:none;color:inherit;font-weight:inherit;background: none !important;}
+.sortable{border:inherit;color:inherit;font-weight:inherit;}
+.sortable a{border:inherit;color:inherit;font-weight:inherit;}
+.ui-state-highlight{height:38px;margin-bottom:20px;}
+
+#tab-navi ul li.current a, #tab-navi ul li a:hover {
+    background-color: #EEEEEE;
+    box-shadow: 0 0 3px #DDDDDD inset;
+}
+
+h1 {
+  margin: 12px 0 21px;
+}
+
+hr {
+  margin-bottom: 30px;
+  margin-top: 50px;
+}
+
+pre {
+border: 1px solid #DDD;
+font-family: Monaco, Andale Mono, Courier New, monospace;
+font-size: 13px;
+line-height: 18px;
+margin-bottom: 15px;
+background: whiteSmoke;
+max-height: 200px;
+overflow: auto;
+padding: 20px;
+}
