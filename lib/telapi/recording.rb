@@ -9,6 +9,7 @@ module Telapi
       # Also, recordings can be scoped to a call, see Telapi::Call::recordings
       #
       # Optional params is a hash containing:
+      # +CallSid+:: Show recordings made during a particular call
       # +DateCreated+:: date in the following format: YYYY-MM-DD
       # +Page+:: integer greater than 0
       # +PageSize+:: integer greater than 0
