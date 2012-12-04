@@ -40,8 +40,8 @@ module Telapi
       # +SmsFallbackMethod+:: (POST) or GET
       # +HeartbeatUrl+:: valid URL
       # +HeartbeatMethod+:: (POST) or GET
-      # +StatusCallback+:: valid URL
-      # +StatusCallbackMethod+:: (POST) or GET
+      # +HangupCallback+:: valid URL
+      # +HangupCallbackMethod+:: (POST) or GET
       def create(name, optional_params = {})
         opts = { :FriendlyName => name }.merge(optional_params)
         response = Network.post(['Applications'], opts)
