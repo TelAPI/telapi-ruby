@@ -63,8 +63,8 @@ module Telapi
       # +SmsFallbackMethod+:: (POST) or GET
       # +HeartbeatUrl+:: valid URL
       # +HeartbeatMethod+:: (POST) or GET
-      # +StatusCallback+:: valid URL
-      # +StatusCallbackMethod+:: (POST) or GET
+      # +HangupCallback+:: valid URL
+      # +HangupCallbackMethod+:: (POST) or GET
       def update(id, optional_params = {})
         response = Network.post(['IncomingPhoneNumbers', id], optional_params)
         IncomingPhoneNumber.new(response)
