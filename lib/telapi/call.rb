@@ -13,6 +13,7 @@ module Telapi
       # +StartTime+:: date in the following format: YYYY-MM-DD
       # +Page+:: integer greater than 0
       # +PageSize+:: integer greater than 0
+      # +DisableFaxDirections+:: true or (false)
       def list(optional_params = {})
         response = Network.get(['Calls'], optional_params)
         ResourceCollection.new(response, 'calls', self)
@@ -43,6 +44,10 @@ module Telapi
       # +SendDigits+:: 0-9, #, or *
       # +Timeout+:: integer greater than or equal to 0 (default: 60)
       # +HideCallerId+:: true or (false)
+      # +StraightToVoicemail+:: true or (false)
+      # +IfMachine+:: redirect, hangup,  or (continue)
+      # +IfMachineUrl+:: valid URL
+      # +IfMachineMethod+:: (POST) or GET
       def make(to, from, url, optional_params = {})
         opts = { :To => to, :From => from, :Url => url }.merge(optional_params)
         response = Network.post(['Calls'], opts)
