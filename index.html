@@ -217,10 +217,10 @@ p messages
 
         <a href="http://www.telapi.com/docs/api/rest/sms/send/">Documentation</a><br>
 
-        <p>Send SMS messages with the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/lib/telapi/message.rb#L38">create</a> method:</p>
+        <p>Send SMS messages with the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/lib/telapi/message.rb#L38">create</a> method. Note the order of the required parameters must be To, From, and Body:</p>
 
 <pre class="prettyprint lang-ruby">
-message = Telapi::Message.create( From = '7325551234', To = '4041011337', Body = 'hello!')
+message = Telapi::Message.create('7325551234', '4041011337', 'hello!')
  
 p message.sid
 </pre> 
@@ -263,7 +263,7 @@ p calls
 
         <a href="http://www.telapi.com/docs/api/rest/calls/make/">Documentation</a><br>
 
-        <p>Make a call with the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/lib/telapi/call.rb#L46">make</a> method:</p>
+        <p>Make a call with the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/lib/telapi/call.rb#L46">make</a> method. Note the order of the required parameters must be To, From, and Url:</p>
 
 <pre class="prettyprint lang-ruby">
 call = Telapi::Call.make("7325551234", "2095555678", "http://foo.com")
@@ -307,7 +307,7 @@ Telapi::Call.send_digits( {CallSid}, '1234' )
         <p>To play audio to a call, use the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/lib/telapi/call.rb#L103">play_audio</a> method:</p>
 
 <pre class="prettyprint lang-ruby">
-Telapi::Call.play_audio('{CallSid}', AudioUrl = 'http://www.example.com/sample.mp3')
+Telapi::Call.play_audio('{CallSid}', 'http://www.example.com/sample.mp3')
 </pre>
 
 <h4 style="display:inline;">Call Voice Effects</h4>
@@ -327,7 +327,7 @@ Telapi::Call.play_audio( {CallSid}, :Pitch => '2' )
         <p>To record a call, use the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/lib/telapi/call.rb#L136">record</a> method:</p>
 
 <pre class="prettyprint lang-ruby">
-Telapi::Call.record( {CallSid}, Record = 'true' )
+Telapi::Call.record( {CallSid}, 'true' )
 </pre>
 
 
