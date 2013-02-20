@@ -536,7 +536,7 @@ p incoming_num
         <p>Request an available phone number list resource with the <a href="https://github.com/TelAPI/telapi-ruby/blob/master/lib/telapi/available_phone_number.rb#L18">list</a> method:</p>
 
 <pre class="prettyprint lang-ruby">
-available_nums = Telapi::AvailablePhoneNumber.list(country_code = 'US', num_type ='Local')
+available_nums = Telapi::AvailablePhoneNumber.list('US', 'Local')
 
 p available_nums
 </pre> 
