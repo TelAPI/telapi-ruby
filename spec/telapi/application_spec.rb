@@ -66,4 +66,11 @@ describe Telapi::Application do
       klass.get('abc123').delete
     end
   end
+  
+  describe ".generate_token" do
+    it "calls api via http post and returns an Application resource" do
+      api_should_use(:post)
+      klass.generate_token('abc123').should be_a(klass)
+    end
+  end
 end

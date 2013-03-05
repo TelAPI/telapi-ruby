@@ -67,6 +67,16 @@ module Telapi
         Application.new(response)
       end
 
+      # Generates TelAPI JavaScript SDK credentials
+      # See http://www.telapi.com/docs/sdks/javascript/
+      #
+      # Required params:
+      # +id+:: application id
+      def generate_token(id, optional_params = {})
+        response = Network.post(['Applications', id, 'GenerateToken'], optional_params)
+        Application.new(response)
+      end
+
     end
 
     # See ::update
