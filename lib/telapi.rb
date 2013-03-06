@@ -23,5 +23,6 @@ require 'telapi/participant'
 require 'telapi/recording'
 require 'telapi/transcription'
 require 'telapi/usage'
+require 'telapi/fax'
 
 require 'telapi/inbound_xml'
