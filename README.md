@@ -97,6 +97,10 @@ Refer to the documentation for more examples.
 
     Telapi::Message.create('12223334444', '13334445555', 'Hey you')
 
+### Send an MMS
+
+    Telapi::MMS.create('12223334444', '13334445555', 'Hey you', 'http://some-image-url.png')
+
 ### Transcribe audio
 
     Telapi::Transcription.transcribe_audio('http://some-audio-url')
