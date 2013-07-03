@@ -6,8 +6,8 @@ require 'telapi/version'
 Gem::Specification.new do |gem|
   gem.name          = "telapi"
   gem.version       = Telapi::VERSION
-  gem.authors       = ["Phil Misiowiec", "Matt Meyer"]
-  gem.email         = ["phil@webficient.com", "mmeyer@telapi.com"]
+  gem.authors       = ["Phil Misiowiec", "Matt Meyer", "Doug Crescenzi"]
+  gem.email         = ["phil@webficient.com", "mmeyer@telapi.com", "doug@douglascrescenzi.com"]
   gem.description   = %q{TelAPI wrapper. See www.telapi.com.}
   gem.summary       = %q{TelAPI wrapper}
   gem.homepage      = "http://github.com/telapi/telapi-ruby"
