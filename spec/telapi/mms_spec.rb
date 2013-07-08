@@ -20,9 +20,9 @@ describe Telapi::Message do
       before { stub_telapi_request('{ "mms_messages": [{ "to": "+14245551234","from": "+17325551234"}] }') }
 
       it "has a collection of MMS objects" do
-        true
+        klass.list.first.should be_a(klass)
       end
-    end
+    end 
   end
 
   describe ".get" do
