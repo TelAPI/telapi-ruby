@@ -16,8 +16,8 @@ module Telapi
         response = Network.get(['MMS', 'Messages'], optional_params)
         ResourceCollection.new(response, 'mms_messages', self)
       end
-
-      # Returns a specific Telapi::Message object given its id
+      
+      # Returns a specific Telapi::MMS object given its id
       def get(id)
         response = Network.get(['MMS', 'Messages', id])
         Message.new(response)
