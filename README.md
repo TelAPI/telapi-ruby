@@ -94,12 +94,12 @@ Refer to the documentation for more examples.
     Telapi::Call.record('123abc')
 
 ### Send an SMS message
-
-    Telapi::Message.create('12223334444', '13334445555', 'Hey you')
+    # Params ('To', 'From', 'Body', 'Status Callback')
+    Telapi::Message.create('12223334444', '13334445555', 'Check out TelAPI!')
 
 ### Send an MMS
-
-    Telapi::MMS.create('12223334444', '13334445555', 'Hey you', 'http://some-image-url.png')
+    # Params ('To', 'From', 'Body', 'Attachment URL', 'Status Callback')
+    Telapi::MMS.create('12223334444', '13334445555', 'Check out TelAPI!', 'http://telapi.com/some-image-url.png')
 
 ### Transcribe audio
 
