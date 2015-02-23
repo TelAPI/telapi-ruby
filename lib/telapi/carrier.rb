@@ -7,7 +7,7 @@ module Telapi
       # See http://www.telapi.com/docs/api/rest/carrier-services/carrier-lookup/
       def lookup(phone_number)
         opts = { :PhoneNumber => phone_number }
-        response = Network.get(['Carrier'], opts)
+        response = Network.get(['Lookups','Carrier'], opts)
         Carrier.new(response)
       end
 
