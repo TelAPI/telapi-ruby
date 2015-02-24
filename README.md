@@ -2,6 +2,8 @@
 
 See www.telapi.com to signup for TelAPI.
 
+**PLEASE NOTE THAT THIS LIBRARY IS NOT ACTIVELY MAINTAINED BY TELAPI**
+
 ## Installation
 
 Add this line to your application's Gemfile:
